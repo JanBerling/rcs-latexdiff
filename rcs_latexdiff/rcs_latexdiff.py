@@ -104,12 +104,13 @@ def exec_latexmk(tex_filename, src_path):
     starting_dir = os.getcwd()
     os.chdir(src_path)
     
-    # Run pdflatex and bibtex a bunch of times
-    try:
-        run_command("latexmk -pdf -interaction=nonstopmode -output-directory={} {}".format(tex_path, tex_filename))
-        logger.info("Ran latexmk on {} outputting to {}".format(tex_filename, tex_path))
-    except:
-        logger.debug("Problem building pdf file.")
+    # Run pdflatex and bibtex 3 times to build references and index
+    for i in range(3):
+        try:
+            run_command("latexmk -pdf -interaction=nonstopmode -output-directory={} {}".format(tex_path, tex_filename))
+            logger.info("Ran latexmk on {} outputting to {}".format(tex_filename, tex_path))
+        except:
+            logger.debug("Problem building pdf file.")
     
     # Return to original directory
     os.chdir(starting_dir)
